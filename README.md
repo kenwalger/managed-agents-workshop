@@ -17,7 +17,7 @@ You've called Claude: send a request, read a response. In this lab you **operate
 | Stateless; you resend the history | State lives on the server: history, sandbox files, outputs | 4, 5 |
 | You read the response | You stream events, steer, or interrupt mid-run | 3, 4 |
 | Your code runs the tools | You decide which tools it may use, and it runs them in a sandbox | 1 |
-| Cost is per call | Cost and time are per session, so cleanup matters | 2, 6 |
+| You manage request costs | You manage token usage, execution time, and session budgets | 2, 6 |
 
 **The task.** `fixture/` holds `metrolen`, a tiny fictional unit-conversion library at version 2, plus documentation written for version 1. The agent runs every code sample in the docs inside its sandbox, finds the ones that no longer match the code, and writes a drift report.
 
@@ -30,9 +30,20 @@ You've called Claude: send a request, read a response. In this lab you **operate
 5. Download the agent's outputs and check its work against a structured contract instead of reading its prose.
 6. Clean up a session safely, keeping a local copy first, and say what remains afterward.
 
+## Workshop materials
+
+This repository includes the complete instructor-led session and hands-on lab:
+
+- **[Presentation](presentation/slides.md):** 20-minute instructor-led introduction, with [speaker notes](presentation/speaker-notes.md) and [presentation guidance](presentation/README.md).
+- **[Hands-on lab](#setup-5-minutes):** 60-minute guided exercise using Claude Managed Agents.
+- **[Instructor guide](docs/instructor-guide.md):** One-page setup, delivery, troubleshooting, and handoff reference.
+- **[Design note](docs/design-note.md):** Instructional decisions, AI-assisted development, pilot findings, and limitations.
+
+
 ## Before you start
 
-- Python 3.12 or newer, and [uv](https://docs.astral.sh/uv/).
+- [uv](https://docs.astral.sh/uv/). It installs Python 3.12 for you if you don't have it.
+- git, or a ZIP download of this repository.
 - An Anthropic API key with access to Managed Agents (beta).
 - **Two terminals, both open in this folder:** the **watch terminal** shows the agent's events (from step 3 on), and the **command terminal** runs everything else.
 - Each step's script has one function for you to fill in. Until you do, the script stops with a `YOUR TURN (step N): ...` message instead of running. That's expected. `watch.py`, `check.py`, and `replay.py` are complete, and `solution/` has reference versions if you get stuck.
@@ -40,13 +51,48 @@ You've called Claude: send a request, read a response. In this lab you **operate
 
 ## Setup (5 minutes)
 
-Open both terminals now, each in this folder. Pick one as your **watch terminal** and the other as your **command terminal**. Setup runs in the command terminal.
+Open two terminals now. Pick one as your **command terminal** (setup runs there) and the other as your **watch terminal**. Once the code is downloaded, `cd` the watch terminal into the same folder too.
+
+**Get the code and install the packages.** On Windows, clone into a short path such as `C:\Users\<you>\managed-agents-workshop`: a deeply nested folder can hit Windows' 260-character path limit when packages install.
 
 PowerShell (Windows):
 
 ```powershell
 # command terminal
+cd $HOME
+git clone https://github.com/kenwalger/managed-agents-workshop.git
+cd managed-agents-workshop
 uv sync
+```
+
+macOS or Linux:
+
+```bash
+# command terminal
+git clone https://github.com/kenwalger/managed-agents-workshop.git
+cd managed-agents-workshop
+uv sync
+```
+
+No git? On the repository's GitHub page, choose **Code**, then **Download ZIP**, unzip it (on Windows, into a short path like `C:\Users\<you>\`), and `cd` into the unzipped folder, `managed-agents-workshop-main`.
+
+The first `uv sync` can take a minute or two while uv downloads the packages, and Python too if it isn't already installed. It may be quiet for a while; that's normal. It's finished when your prompt comes back after lines like these:
+
+```text
+Resolved 30 packages in ...
+Installed 28 packages in ...
+ + anthropic==2.5.0
+ ...
+```
+
+(Your versions and counts will differ. If everything is already installed, it just prints `Resolved ...` and `Audited ...`.)
+
+**Add your key and check the setup.**
+
+PowerShell (Windows):
+
+```powershell
+# command terminal
 Copy-Item .env.example .env
 notepad .env            # paste your key after ANTHROPIC_API_KEY=
 uv run check.py 0
@@ -56,7 +102,6 @@ macOS or Linux:
 
 ```bash
 # command terminal
-uv sync
 cp .env.example .env    # then edit .env and paste your key
 uv run check.py 0
 ```
@@ -194,7 +239,7 @@ PASS: the same session handled 2 messages without starting over
 INFO: your first follow-up arrived after the first run finished, so it started a new turn
 ```
 
-**When does a message take effect?** If the agent is still running, your message waits until its current step finishes, then the agent takes it into account. If the agent has finished, your message starts a new turn in the same session, with the same sandbox, files, and conversation. The check tells you which happened. Both pass.
+**When does a message take effect?** If the agent is still running, your message waits until the agent's in-flight tool calls finish, then takes effect at its next step. If the agent has finished, your message starts a new turn in the same session, with the same sandbox, files, and conversation. The check tells you which happened. Both pass.
 
 **Optional drill: interrupt.** Ask for something long, then stop it:
 
@@ -290,7 +335,7 @@ This reads the fixed pages and confirms the drifts are gone. It doesn't run them
 
 | You see | What it means | What to do |
 |---|---|---|
-| `No ANTHROPIC_API_KEY found` | `.env` is missing or empty | `Copy-Item .env.example .env` and add your key |
+| `No ANTHROPIC_API_KEY found` | `.env` is missing or empty | `Copy-Item .env.example .env` (Windows) or `cp .env.example .env` (macOS/Linux), then add your key |
 | `API error 400: The request was invalid` | A malformed ID, often a copy-paste typo | Check the IDs in `.lab-state.json` |
 | `NOT YET: the saved session no longer exists` | The session was deleted | `uv run 02_start.py --new` |
 | `Cannot delete session while it is running` | Only idle sessions can be deleted | `uv run 04_cleanup.py` interrupts first; run it again |

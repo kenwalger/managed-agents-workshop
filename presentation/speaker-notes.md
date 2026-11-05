@@ -69,7 +69,7 @@ Summarize: agent and environment are defined once and reused; a session is one r
 
 - On the diagram, a session starts **idle** and goes **running** when a message arrives. When a turn ends, it goes back to **idle**, ready for more work.
 - **A failed turn is not the same as a terminated session.** If a turn hits an error, you see a `session.error` event, and that turn stops. The session is still a session, and you can look at it.
-- **`terminated` is a separate, final status:** no new events are accepted. In this lab you reach it only by archiving; the platform can also terminate a session after an unrecoverable error.
+- **`terminated` is a separate, final status:** no new events are accepted. A session gets there when you archive it, or when the platform ends it after an unrecoverable error. This lab never archives sessions: cleanup deletes them instead, so learners won't see `terminated`.
 - **Neither a failed turn nor `terminated` deletes anything.** The session resource and its history stay until *you* delete it, and only deletion returns 404.
 - Runtime is billed only while running.
 
