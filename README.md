@@ -1,3 +1,9 @@
+<picture>
+  <img alt="Documentation Drift Claude Managed Agents Workshop" src="img/logo.png">
+</picture>
+
+---
+
 # From Calling Claude to Operating an Agent
 
 A 60-minute hands-on lab for Claude Managed Agents.
