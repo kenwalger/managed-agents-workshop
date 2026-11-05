@@ -60,7 +60,7 @@ def main() -> None:
     for path in saved:
         print(f"Saved {path.relative_to(OUTPUTS_DIR.parent)} ({path.stat().st_size} bytes)")
     if not saved:
-        print("No output files yet. Is the agent finished? Check terminal 1, then try again.")
+        print("No output files yet. Is the agent finished? Check the watch terminal, then try again.")
         return
     print("\nNext: uv run check.py 5")
 

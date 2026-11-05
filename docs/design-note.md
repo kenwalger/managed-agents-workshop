@@ -73,14 +73,13 @@ Specific places where AI-generated material was wrong, too generic, or not right
 
 ## 7. Pilot results
 
-**[fill in]**
 
-| | |
-|---|---|
-| Lab time (pilot) | **[fill in]** |
-| Where I stalled | **[fill in]** |
-| What changed because of it | **[fill in]** |
-| API cost of one full run | **[fill in]** |
+| |                                                                                                                                                                                                                     |
+|---|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Lab time (pilot) | Approximately 25 minutes with a fresh clone, with the learner scripts. The author knew the material, so expect roughly 60 minutes for a first-time learner.                                                         |
+| Where I stalled | The `YOUR TURN` message told me to find a `YOUR TURN function` that doesn't exist. The function is `choose_permissions()`. A cleanup hint left out `uv run`. Missing session cost. Terminal 1 vs 2 in instructions. |
+| What changed because of it | Updated the `YOUR TURN` messages to name the file and function. All user-facing commands were checked for `uv run`. Costs added. Instructions clarified.                                                            |
+| API cost of one full run | **[fill in]**                                                                                                                                                                                                       |
 
 ## 8. Scope
 

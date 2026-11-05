@@ -2,7 +2,7 @@
 
 **What this teaches:** moving from *calling* Claude to *operating* a Managed Agents session: start it, watch it, send it more work, verify its report, clean up. A 20-minute session (`presentation/`) leads into a 60-minute lab (`README.md`).
 
-**Prerequisites:** Python 3.12+, `uv`, an API key with Managed Agents access, two terminals in the repository folder.
+**Prerequisites:** Python 3.12+, `uv`, an API key with Managed Agents access, two terminals in the repository folder (a watch terminal and a command terminal).
 
 **Prep, one to two days ahead:**
 1. `uv sync`; add your key to `.env`; `uv run check.py 0`.
@@ -31,8 +31,8 @@
 **Recovery:**
 - **`API error 400: The request was invalid`:** usually a mangled ID in `.lab-state.json`.
 - **"Session no longer exists":** `uv run 02_start.py --new`.
-- **"Cannot delete session while it is running":** run `04_cleanup.py` again; it interrupts first.
+- **"Cannot delete session while it is running":** run `uv run 04_cleanup.py` again; it interrupts first.
 - **Spend cap reached (`budget_reached`):** clean up, then start a new session. The cap is $0.50 per session (`LAB_BUDGET_CENTS`).
 - **A learner is badly behind:** let them copy that one function from `solution/`.
 
-**Cleanup and cost:** learners run `uv run 04_cleanup.py`, then `uv run check.py 6`; at the end, `04_cleanup.py --all` deletes the environment and archives the agent. Expect $0.01 to $0.05 per learner on `claude-haiku-5-5`. Idle sessions cost no runtime but keep their data until deleted (not ZDR-eligible).
+**Cleanup and cost:** learners run `uv run 04_cleanup.py`, then `uv run check.py 6`; at the end, `uv run 04_cleanup.py --all` deletes the environment and archives the agent. Expect $0.01 to $0.05 per learner on `claude-haiku-5-5`. Idle sessions cost no runtime but keep their data until deleted (not ZDR-eligible).

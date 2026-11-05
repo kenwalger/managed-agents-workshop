@@ -43,7 +43,7 @@ def choose_permissions() -> tuple[list[dict[str, Any]], dict[str, Any]]:
     #       built-in tools the task card needs, and turn the rest off (see the README's links).
     # TODO: networking is the environment's networking block. Decide how much internet the
     #       sandbox should reach.
-    raise NotImplementedError("YOUR TURN (step 1): choose the agent's tools and the sandbox's network access in choose_permissions().")
+    raise NotImplementedError("YOUR TURN (step 1): open 01_define.py and fill in choose_permissions(). Replace the raise line with your code.")
 
 
 def define_agent(client: anthropic.Anthropic, tools: list[dict[str, Any]]) -> Any:

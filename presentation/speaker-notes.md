@@ -11,7 +11,7 @@
 **The switch rule:** if nothing appears in the watcher within about 30 seconds, or anything errors, switch to the recording. Say: "Here's a recording of a previous run of exactly this. Nothing is executing now." The screen agrees: the first line reads `Replaying 96 recorded events`, and every line starts with `replay` and the original time. After switching, follow the **Recording** notes on each slide.
 
 **Before you start:**
-- Two terminals in the repository folder, with `.env` holding your key.
+- Two terminals in the repository folder, a **watch terminal** and a **command terminal**, with `.env` holding your key.
 - `uv run check.py 1` passes (the agent and environment exist).
 - No session is saved; if one is, run `uv run solution/04_cleanup.py`.
 - Keep `uv run replay.py recordings/demo.jsonl` typed and ready in a third window.
@@ -59,7 +59,7 @@ Summarize: agent and environment are defined once and reused; a session is one r
 - The slide states the outcome only: no web tools, no network access out of the sandbox. Don't name the settings that produce it. Learners work those out in step 1.
 - Tell the `pip install` story: it shows the agent will reach for the network if it can, and that the boundary held.
 
-**Live, at the end of this slide (terminal 2):** `uv run solution/02_start.py`. Say: "The task is sent. The agent is working now, and nobody is watching yet."
+**Live, at the end of this slide (command terminal):** `uv run solution/02_start.py`. Say: "The task is sent. The agent is working now, and nobody is watching yet."
 
 **Recording:** nothing to start; the replay begins on slide 5.
 
@@ -73,7 +73,7 @@ Summarize: agent and environment are defined once and reused; a session is one r
 - **Neither a failed turn nor `terminated` deletes anything.** The session resource and its history stay until *you* delete it, and only deletion returns 404.
 - Runtime is billed only while running.
 
-**Live (terminal 1):** `uv run watch.py`. It prints `earlier` events, then `live` ones. Point at a `tool: bash` line running a sample and the `result:` that follows: "It ran the samples; it didn't guess." The agent may already be finished; that's normal and sets up the next slide. **If nothing appears within about 30 seconds, switch to the recording.**
+**Live (watch terminal):** `uv run watch.py`. It prints `earlier` events, then `live` ones. Point at a `tool: bash` line running a sample and the `result:` that follows: "It ran the samples; it didn't guess." The agent may already be finished; that's normal and sets up the next slide. **If nothing appears within about 30 seconds, switch to the recording.**
 
 **Recording:** run `uv run replay.py recordings/demo.jsonl` and say it's a recording of a previous run. It finishes in under a minute and stays on screen; narrate slides 5 to 7 from it.
 - **Point at the start:** `session: running`, then `you:` (the task).
@@ -88,7 +88,7 @@ Summarize: agent and environment are defined once and reused; a session is one r
 - The stream doesn't replay, so a reconnecting client lists the history and skips what it has seen. That's the code on the slide, and what `watch.py` does.
 - An idle session sends no new events; `watch.py` checks the status and exits rather than waiting forever.
 
-**Live:** press Ctrl+C in terminal 1 (on Windows it can take a few seconds), then run `uv run watch.py` again. The second attach replays the history.
+**Live:** press Ctrl+C in the watch terminal (on Windows it can take a few seconds), then run `uv run watch.py` again. The second attach replays the history.
 
 **Recording:** a recording can't show a live detach. Say: "In the lab, you'll do this yourself in step 3: Ctrl+C, then reopen, and the history is still there."
 
@@ -102,7 +102,7 @@ Summarize: agent and environment are defined once and reused; a session is one r
 - **After idle:** the message starts a new turn in the same session, with the same sandbox, files, and history.
 - **Interrupt** is different: it stops the agent within about a second, and the session stays usable. It's an optional drill in the lab.
 
-**Live (terminal 2):** `uv run solution/steer.py`. The script prints whether the session was running or idle when the message was sent. Show the new turn in terminal 1 with `uv run watch.py`.
+**Live (command terminal):** `uv run solution/steer.py`. The script prints whether the session was running or idle when the message was sent. Show the new turn in the watch terminal with `uv run watch.py`.
 
 **Recording:** scroll the replay output to the second `you:` line, the continuation ("Now fix the docs..."). In this recording it arrived after the first turn finished, so it started a new turn; point at the `write: .../fixed-*.md` lines that follow. "Same session, same sandbox: it edited files it had created earlier."
 
@@ -148,9 +148,9 @@ AGENT: evidence reproduced locally: 7 of 7
 
 **Purpose:** a clean handoff into the lab.
 
-- Two terminals, both in the repository folder.
+- Two terminals, both in the repository folder: the watch terminal and the command terminal.
 - `YOUR TURN` messages are expected until you fill in that step's function.
 - Step 1 is the one you work out yourself; the README gives code shapes for the others.
 - `AGENT:` lines never block you.
-- Stretch: `check.py stretch` reads the agent's fixed docs; it never runs them.
+- Stretch: `uv run check.py stretch` reads the agent's fixed docs; it never runs them.
 - Start with `uv run check.py 0`.

@@ -23,27 +23,27 @@ STUBS: dict[str, tuple[str, list[str], str]] = {
         "      built-in tools the task card needs, and turn the rest off (see the README's links).",
         "TODO: networking is the environment's networking block. Decide how much internet the",
         "      sandbox should reach.",
-    ], "YOUR TURN (step 1): choose the agent's tools and the sandbox's network access in choose_permissions()."),
+    ], "YOUR TURN (step 1): open 01_define.py and fill in choose_permissions(). Replace the raise line with your code."),
     "02_start.py": ("create_session", [
         "TODO: call client.beta.sessions.create(...) with agent=agent_id, environment_id=...,",
         "      resources=..., a title, and a spend cap:",
         "      budget={\"type\": \"limit\", \"max_list_cost\": {\"amount\": BUDGET_CENTS, \"currency\": \"USD\"}}",
         "TODO: return the session.",
-    ], "YOUR TURN (step 2): create the session in create_session(). The README shows the call."),
+    ], "YOUR TURN (step 2): open 02_start.py and fill in create_session(). Replace the raise line with your code. The README shows the call."),
     "steer.py": ("send_message", [
         "TODO: send one event with client.beta.sessions.events.send(session_id, events=[...]).",
         "TODO: the event is {\"type\": \"user.message\", \"content\": [{\"type\": \"text\", \"text\": text}]}.",
-    ], "YOUR TURN (step 4): send the message in send_message(). The README shows the call."),
+    ], "YOUR TURN (step 4): open steer.py and fill in send_message(). Replace the raise line with your code. The README shows the call."),
     "03_collect.py": ("download_outputs", [
         "TODO: list the session's files:",
         "      client.beta.files.list(scope_id=session_id, betas=[MANAGED_AGENTS_BETA])",
         "TODO: skip files whose .downloadable is False (your own uploads appear in the list too).",
         "TODO: save each with client.files.download(file.id).write_to_file(destination / file.filename)",
         "      and return the list of paths you saved.",
-    ], "YOUR TURN (step 5): download the session's output files in download_outputs()."),
+    ], "YOUR TURN (step 5): open 03_collect.py and fill in download_outputs(). Replace the raise line with your code. The README shows the code."),
     "04_cleanup.py": ("delete_session", [
         "TODO: delete the session with client.beta.sessions.delete(session_id).",
-    ], "YOUR TURN (step 6): delete the session in delete_session()."),
+    ], "YOUR TURN (step 6): open 04_cleanup.py and fill in delete_session(). Replace the raise line with your code. The README shows the call."),
 }
 
 _PATH_HACK = re.compile(r"\nimport sys\nfrom pathlib import Path\n\nsys\.path\.insert\(0, .*\n")

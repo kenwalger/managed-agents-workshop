@@ -5,7 +5,7 @@ you a session ID: your handle on a sandbox, a conversation, and a bill that
 exist on Anthropic's servers until you delete them.
 
 Run:  uv run 02_start.py      Check:  uv run check.py 2
-Then open a second terminal for step 3: uv run watch.py
+Then, in the watch terminal, for step 3: uv run watch.py
 """
 
 from __future__ import annotations
@@ -72,7 +72,7 @@ def create_session(client: anthropic.Anthropic, agent_id: str, environment_id: s
     #       resources=..., a title, and a spend cap:
     #       budget={"type": "limit", "max_list_cost": {"amount": BUDGET_CENTS, "currency": "USD"}}
     # TODO: return the session.
-    raise NotImplementedError("YOUR TURN (step 2): create the session in create_session(). The README shows the call.")
+    raise NotImplementedError("YOUR TURN (step 2): open 02_start.py and fill in create_session(). Replace the raise line with your code. The README shows the call.")
 
 
 def main() -> None:
@@ -86,7 +86,7 @@ def main() -> None:
         raise SystemExit("No agent or environment saved yet. Run step 1 first: uv run 01_define.py")
     if state.get("session_id") and not args.new:
         raise SystemExit(f"A session is already saved ({state['session_id']}). Finish the lab with it, "
-                         "or clean it up with uv run 04_cleanup.py. To start another anyway: --new")
+                         "or clean it up with uv run 04_cleanup.py. To start another anyway: uv run 02_start.py --new")
 
     client = make_client()
     # Watch and steer records belong to one session; clear the previous session's.
@@ -102,7 +102,7 @@ def main() -> None:
     ])
     print("Sent the drift task. The agent is working now, on Anthropic's side.")
     print(f"\nWatch in the browser: {console_url(session.id)}")
-    print("Watch in a terminal:  uv run watch.py      Then: uv run check.py 2")
+    print("In the watch terminal:  uv run watch.py      Here: uv run check.py 2")
 
 
 if __name__ == "__main__":

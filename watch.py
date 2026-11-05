@@ -83,7 +83,7 @@ def watch(client: anthropic.Anthropic, session_id: str) -> None:
         done, status = nothing_left_to_do(client, session_id)
         if done:
             print(f"\nThe session is {status} and nothing is queued. It did all of the above "
-                  "without a watcher attached. Send it more work with steer.py.", flush=True)
+                  "without a watcher attached. Send it more work with uv run steer.py.", flush=True)
             mark_detached("finished")
             return
         print("\n--- live (Ctrl+C to detach; the session keeps running) ---", flush=True)

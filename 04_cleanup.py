@@ -5,8 +5,8 @@ agent wrote are gone. So this script records the session's events to
 recordings/ first. A running session can't be deleted, so it is interrupted first.
 
 The agent and environment are kept so you can run the lab again. To remove them
-too, add --all (the agent is archived: agents can't be deleted, and archiving is
-permanent).
+too, run uv run 04_cleanup.py --all (the agent is archived: agents can't be deleted,
+and archiving is permanent).
 
 Run:  uv run 04_cleanup.py [--all]      Check:  uv run check.py 6
 """
@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import time
+from typing import Any
 
 import anthropic
 
@@ -30,7 +31,7 @@ def delete_session(client: anthropic.Anthropic, session_id: str) -> None:
     :param session_id: The session ID.
     """
     # TODO: delete the session with client.beta.sessions.delete(session_id).
-    raise NotImplementedError("YOUR TURN (step 6): delete the session in delete_session().")
+    raise NotImplementedError("YOUR TURN (step 6): open 04_cleanup.py and fill in delete_session(). Replace the raise line with your code. The README shows the call.")
 
 
 def wait_until_not_running(client: anthropic.Anthropic, session_id: str, seconds: float = 30) -> str:
@@ -50,6 +51,27 @@ def wait_until_not_running(client: anthropic.Anthropic, session_id: str, seconds
         time.sleep(1)
         status = client.beta.sessions.retrieve(session_id).status
     return status
+
+
+def describe_cost(session: dict[str, Any]) -> str:
+    """Summarize what the session consumed, from the session's own usage report.
+
+    ``usage.list_cost`` prices tokens and running time at public list rates, in
+    whole cents rounded to the nearest cent. Your bill can be lower if your
+    organization has negotiated prices.
+
+    :param session: The session as a dictionary (from ``sessions.retrieve``).
+    :returns: Two lines for the terminal.
+    """
+    usage = session.get("usage") or {}
+    cents = int((usage.get("list_cost") or {}).get("amount", "0"))
+    budget = ((session.get("budget") or {}).get("max_list_cost") or {}).get("amount")
+    cap = f", against a ${int(budget) / 100:.2f} budget" if budget else ""
+    cache_write = sum((usage.get("cache_creation") or {}).values())
+    return (f"Session cost: ${cents / 100:.2f} at list prices (rounded to the nearest cent){cap}\n"
+            f"  tokens: {usage.get('input_tokens', 0):,} input, {usage.get('output_tokens', 0):,} output, "
+            f"{cache_write:,} cache write, {usage.get('cache_read_input_tokens', 0):,} cache read; "
+            f"running time: {usage.get('active_seconds', 0):.0f} s")
 
 
 def is_gone(client: anthropic.Anthropic, session_id: str) -> bool:
@@ -82,6 +104,7 @@ def main() -> None:
         status = wait_until_not_running(client, session_id)
         if status == "running":
             raise SystemExit("The session is still running. Wait a moment and run this again.")
+        print(describe_cost(client.beta.sessions.retrieve(session_id).to_dict(mode="json")))
         delete_session(client, session_id)
     if session_id:
         if not is_gone(client, session_id):

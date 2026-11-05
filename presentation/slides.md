@@ -116,9 +116,9 @@ One lab run on `claude-haiku-5-5` cost about **$0.01** in testing.
 | 1 Define (**work it out**) | Choose tools and network access | bash on, web off, no egress |
 | 2 Start | Create the session with a budget | Files mounted, cap set |
 | 3 Watch | Ctrl+C, then reopen | Watched twice, saw a sample error |
-| 4 Continue | `steer.py` | Second message handled, same session |
+| 4 Continue | `uv run steer.py` | Second message handled, same session |
 | 5 Collect | Download the reports | Schema-valid; `AGENT:` lines are information only |
 | 6 Clean up | Delete the session | Session 404, recording kept |
-| Stretch (optional) | `check.py stretch` | Fixed docs checked by reading, not running |
+| Stretch (optional) | `uv run check.py stretch` | Fixed docs checked by reading, not running |
 
-Two terminals, both in the repository folder. A `YOUR TURN` stop is expected until you fill in that step's function.
+Open a watch terminal and a command terminal, both in the repository folder. A `YOUR TURN` stop is expected until you fill in that step's function.

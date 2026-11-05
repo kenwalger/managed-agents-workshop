@@ -83,7 +83,7 @@ def run_step(main: Callable[[], None]) -> None:
     try:
         main()
     except NotImplementedError as exc:
-        raise SystemExit(f"\n{exc}\nOpen the file, find the YOUR TURN function, and fill it in.") from None
+        raise SystemExit(f"\n{exc}") from None  # the message names the file and the function
     except anthropic.APIStatusError as exc:
         raise SystemExit(f"\nAPI error {exc.status_code}: {exc.message}") from None
 

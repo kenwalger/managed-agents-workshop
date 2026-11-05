@@ -1,4 +1,4 @@
-"""Step 4: send the session more work from a second terminal, without starting over.
+"""Step 4: send the session more work from the command terminal, without starting over.
 
 If the agent is still running, your message waits until its current step
 finishes, then the agent takes it into account mid-run. If the agent has already
@@ -70,7 +70,7 @@ def main() -> None:
     if args.interrupt:
         send_interrupt(client, session_id)
         lab_state.append("steers", {"sent_at": lab_state.now(), "status_at_send": status, "interrupt": True})
-        print(f"Sent an interrupt while the session was {status}. Watch it go idle in terminal 1.")
+        print(f"Sent an interrupt while the session was {status}. Watch it go idle in the watch terminal.")
         return
 
     send_message(client, session_id, args.message)
@@ -79,7 +79,7 @@ def main() -> None:
         print("The agent is running. Your message is queued and takes effect after its current step.")
     else:
         print(f"The session was {status}. Your message starts a new turn in the same session.")
-    print("Follow it in terminal 1 (uv run watch.py), then: uv run check.py 4")
+    print("Follow it in the watch terminal (uv run watch.py), then: uv run check.py 4")
 
 
 if __name__ == "__main__":

@@ -31,7 +31,7 @@ def download_outputs(client: anthropic.Anthropic, session_id: str, destination: 
     # TODO: skip files whose .downloadable is False (your own uploads appear in the list too).
     # TODO: save each with client.files.download(file.id).write_to_file(destination / file.filename)
     #       and return the list of paths you saved.
-    raise NotImplementedError("YOUR TURN (step 5): download the session's output files in download_outputs().")
+    raise NotImplementedError("YOUR TURN (step 5): open 03_collect.py and fill in download_outputs(). Replace the raise line with your code. The README shows the code.")
 
 
 def main() -> None:
@@ -53,7 +53,7 @@ def main() -> None:
     for path in saved:
         print(f"Saved {path.relative_to(OUTPUTS_DIR.parent)} ({path.stat().st_size} bytes)")
     if not saved:
-        print("No output files yet. Is the agent finished? Check terminal 1, then try again.")
+        print("No output files yet. Is the agent finished? Check the watch terminal, then try again.")
         return
     print("\nNext: uv run check.py 5")
 

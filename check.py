@@ -248,7 +248,7 @@ def step_2() -> Result:
     if expected == 0 or len(session.get("resources") or []) != expected:
         problems.append(f"Expected {expected} mounted files, found {len(session.get('resources') or [])}.")
     if not list_events(client, session["id"], types=["user.message"]):
-        problems.append("No task was sent yet. 02_start.py sends it right after creating the session.")
+        problems.append("No task was sent yet. uv run 02_start.py sends it right after creating the session.")
     if problems:
         return False, [f"NOT YET: {p}" for p in problems]
     cap = int(session["budget"]["max_list_cost"]["amount"]) / 100
@@ -266,8 +266,8 @@ def step_3() -> Result:
     errors = [match.group(0) for e in events if e["type"] == "agent.tool_result"
               for match in [SAMPLE_ERROR.search(json.dumps(e.get("content")))] if match]
     if len(attachments) < 2:
-        lines.append(f"NOT YET: watch.py has attached {len(attachments)} time(s). Close it with Ctrl+C and "
-                     "run it again: the point is that the session doesn't depend on your watcher.")
+        lines.append(f"NOT YET: the watcher has attached {len(attachments)} time(s). Close it with Ctrl+C, then run "
+                     "uv run watch.py again: the point is that the session doesn't depend on your watcher.")
     if not bash_calls:
         lines.append("NOT YET: the agent hasn't run any code yet. Give it a moment, then watch again.")
     if lines:
@@ -293,7 +293,7 @@ def step_4() -> Result:
         return False, ["NOT YET: only the original task has been sent. Send more work: uv run steer.py"]
     second = messages[1]
     if second.get("processed_at") is None or not any(order[i["id"]] > order[second["id"]] for i in idles):
-        return False, ["NOT YET: your message is still being worked on. Wait until terminal 1 shows the "
+        return False, ["NOT YET: your message is still being worked on. Wait until the watch terminal shows the "
                        "session idle, then check again."]
     first_idle = order[idles[0]["id"]]
     timing = ("arrived while the agent was running, and it was taken into account at the agent's next step"
@@ -343,12 +343,12 @@ def step_6() -> Result:
             pass
     recording = Path(state.get("recording_path", ""))
     if not recording.is_file():
-        problems.append("No local recording. 04_cleanup.py saves one before deleting.")
+        problems.append("No local recording. uv run 04_cleanup.py saves one before deleting.")
     if problems:
         return False, [f"NOT YET: {p}" for p in problems]
     kept = (f"INFO: still on the server for next time: agent {state['agent_id']}, environment "
-            f"{state.get('environment_id')}. Remove them with 04_cleanup.py --all."
-            if state.get("agent_id") else "INFO: the environment is deleted and the agent archived (--all).")
+            f"{state.get('environment_id')}. Remove them with uv run 04_cleanup.py --all."
+            if state.get("agent_id") else "INFO: the environment is deleted and the agent archived (uv run 04_cleanup.py --all).")
     return True, [f"PASS: session deleted (404), uploads deleted, recording kept at {recording.name}", kept]
 
 
@@ -361,7 +361,7 @@ def fixed_docs_problems(pages: dict[str, str]) -> list[str]:
     problems = []
     for name in ("fixed-quickstart.md", "fixed-formatting.md", "fixed-parsing.md"):
         if name not in pages:
-            problems.append(f"{name} not found in outputs/. Did the step 4 continuation finish? Then run 03_collect.py.")
+            problems.append(f"{name} not found in outputs/. Did the step 4 continuation finish? Then run uv run 03_collect.py.")
             continue
         samples = samples_in(pages[name], name)
         code = "\n".join(s.code for s in samples)
