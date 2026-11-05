@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/metrolen/drift-report.schema.json",
+  "title": "metrolen documentation drift report",
+  "description": "One result per documentation sample the agent ran. Passing samples are included.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "library_version", "python_version", "results"],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "library_version": { "type": "string", "minLength": 1 },
+    "python_version": { "type": "string", "minLength": 1 },
+    "results": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/result" }
+    }
+  },
+  "$defs": {
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "doc_file", "sample_line", "command", "exit_status", "stdout", "stderr",
+        "expected_output", "matches_docs", "kind", "explanation", "suggested_fix"
+      ],
+      "properties": {
+        "doc_file": {
+          "type": "string",
+          "pattern": "^docs/[a-z_]+\\.md$",
+          "description": "Path relative to the fixture folder, for example docs/quickstart.md"
+        },
+        "sample_line": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Line number of the sample's opening ```python fence"
+        },
+        "command": { "type": "string", "minLength": 1, "description": "The exact command you ran" },
+        "exit_status": { "type": "integer" },
+        "stdout": { "type": "string" },
+        "stderr": { "type": "string" },
+        "expected_output": { "type": "string", "description": "The output the docs show" },
+        "matches_docs": { "type": "boolean" },
+        "kind": {
+          "enum": ["missing_name", "bad_arguments", "output_mismatch", "other_error", null],
+          "description": "null when matches_docs is true; otherwise classify by the observed symptom"
+        },
+        "explanation": { "type": "string", "minLength": 1 },
+        "suggested_fix": { "type": ["string", "null"] },
+        "fix_verified": {
+          "type": ["boolean", "null"],
+          "description": "Optional. Whether running the suggested fix produced the documented output."
+        }
+      },
+      "if": {
+        "properties": { "matches_docs": { "const": false } },
+        "required": ["matches_docs"]
+      },
+      "then": {
+        "properties": {
+          "kind": { "enum": ["missing_name", "bad_arguments", "output_mismatch", "other_error"] },
+          "suggested_fix": { "type": "string", "minLength": 1 }
+        }
+      },
+      "else": {
+        "properties": {
+          "kind": { "const": null },
+          "suggested_fix": { "const": null },
+          "fix_verified": { "const": null }
+        }
+      }
+    }
+  }
+}
