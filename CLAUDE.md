@@ -81,7 +81,9 @@ managed-agents-lab/
 │   ├── <library>/         # v2 source
 │   └── docs/              # v1-era docs with planted drift
 ├── report.schema.json     # the output contract
-├── recordings/demo.jsonl  # known-good recorded run for the demo fallback (other recordings gitignored)
+├── recordings/demo.jsonl  # known-good recorded run; the live demo's fallback (other recordings gitignored)
+├── presentation/          # slides.md (+ exported slides.html, slides.pdf), speaker-notes.md, diagrams/
+├── docs/instructor-guide.md  # one-page instructor handoff
 └── tests/                 # offline tests only
 
 `solution/make_stubs.py` generates the learner scripts from `solution/`; a test fails if they drift.

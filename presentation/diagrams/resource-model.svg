@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <title>Managed Agents resource model, as used in the lab</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#374151"/>
+    </marker>
+  </defs>
+  <rect width="960" height="560" fill="#ffffff"/>
+
+  <!-- Your machine -->
+  <rect x="20" y="50" width="230" height="480" rx="10" fill="#f3f4f6" stroke="#6b7280"/>
+  <text x="135" y="40" text-anchor="middle" font-size="16" font-weight="700" fill="#111827">Your machine</text>
+  <g font-size="14" fill="#111827" font-family="Consolas, Menlo, monospace">
+    <text x="40" y="114">01_define.py</text>
+    <text x="40" y="254">02_start.py</text>
+    <text x="40" y="304">watch.py</text>
+    <text x="40" y="354">steer.py</text>
+    <text x="40" y="404">04_cleanup.py</text>
+    <text x="40" y="484">03_collect.py</text>
+  </g>
+  <rect x="35" y="150" width="200" height="60" rx="6" fill="#ffffff" stroke="#9ca3af"/>
+  <text x="135" y="174" text-anchor="middle" font-size="13" font-family="Consolas, Menlo, monospace" fill="#111827">.lab-state.json</text>
+  <text x="135" y="195" text-anchor="middle" font-size="12" fill="#374151">your handles: the IDs</text>
+
+  <!-- Anthropic side -->
+  <rect x="400" y="50" width="540" height="480" rx="10" fill="#eef4ff" stroke="#1d4ed8"/>
+  <text x="670" y="40" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">Anthropic: Managed Agents</text>
+
+  <rect x="420" y="80" width="245" height="110" rx="8" fill="#ffffff" stroke="#1d4ed8"/>
+  <text x="435" y="104" font-size="15" font-weight="700" fill="#1e3a8a">Agent</text>
+  <text x="435" y="126" font-size="12.5" fill="#111827">model, system prompt, tools</text>
+  <text x="435" y="146" font-size="12.5" fill="#111827">versioned; reused across runs</text>
+  <text x="435" y="166" font-size="12.5" fill="#111827">can be archived, not deleted</text>
+
+  <rect x="680" y="80" width="240" height="110" rx="8" fill="#ffffff" stroke="#1d4ed8"/>
+  <text x="695" y="104" font-size="15" font-weight="700" fill="#1e3a8a">Environment</text>
+  <text x="695" y="126" font-size="12.5" fill="#111827">sandbox template:</text>
+  <text x="695" y="146" font-size="12.5" fill="#111827">cloud container + networking</text>
+  <text x="695" y="166" font-size="12.5" fill="#111827">reused; can be deleted</text>
+
+  <line x1="542" y1="190" x2="542" y2="222" stroke="#1d4ed8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="550" y="212" font-size="11.5" fill="#1e3a8a">latest version</text>
+  <line x1="800" y1="190" x2="800" y2="222" stroke="#1d4ed8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="808" y="212" font-size="11.5" fill="#1e3a8a">provisions sandbox</text>
+
+  <rect x="420" y="225" width="500" height="210" rx="8" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="435" y="250" font-size="15" font-weight="700" fill="#1e3a8a">Session: one run, with a spend cap</text>
+
+  <rect x="435" y="265" width="225" height="155" rx="6" fill="#f8fafc" stroke="#93c5fd"/>
+  <text x="447" y="287" font-size="13" font-weight="700" fill="#111827">Agent loop + event history</text>
+  <text x="447" y="308" font-size="12" fill="#374151">runs on Anthropic's side</text>
+  <g font-size="11.5" fill="#111827" font-family="Consolas, Menlo, monospace">
+    <text x="447" y="332">user.message</text>
+    <text x="447" y="350">agent.tool_use</text>
+    <text x="447" y="368">agent.tool_result</text>
+    <text x="447" y="386">agent.message</text>
+    <text x="447" y="404">session.status_idle</text>
+  </g>
+
+  <rect x="675" y="265" width="230" height="155" rx="6" fill="#f8fafc" stroke="#93c5fd"/>
+  <text x="687" y="287" font-size="13" font-weight="700" fill="#111827">Sandbox (container)</text>
+  <text x="687" y="308" font-size="12" fill="#374151">tools execute here</text>
+  <g font-size="11.5" fill="#111827" font-family="Consolas, Menlo, monospace">
+    <text x="687" y="334">/mnt/session/uploads/</text>
+    <text x="687" y="364">/mnt/session/outputs/</text>
+  </g>
+  <text x="687" y="349" font-size="11.5" fill="#374151">your files, read-only</text>
+  <text x="687" y="379" font-size="11.5" fill="#374151">the agent's reports</text>
+  <text x="687" y="404" font-size="11.5" fill="#374151">no internet in this lab</text>
+
+  <rect x="420" y="452" width="500" height="58" rx="8" fill="#ffffff" stroke="#1d4ed8"/>
+  <text x="435" y="476" font-size="15" font-weight="700" fill="#1e3a8a">Files API</text>
+  <text x="520" y="476" font-size="12.5" fill="#111827">uploads are mounted into the sandbox;</text>
+  <text x="520" y="496" font-size="12.5" fill="#111827">outputs are listed by session and downloaded</text>
+
+  <!-- Calls -->
+  <g stroke="#374151" stroke-width="1.6" fill="none">
+    <line x1="250" y1="110" x2="415" y2="110" marker-end="url(#arrow)"/>
+    <line x1="250" y1="250" x2="415" y2="250" marker-end="url(#arrow)"/>
+    <line x1="415" y1="300" x2="250" y2="300" marker-end="url(#arrow)"/>
+    <line x1="250" y1="350" x2="415" y2="350" marker-end="url(#arrow)"/>
+    <line x1="250" y1="400" x2="415" y2="400" marker-end="url(#arrow)"/>
+    <line x1="415" y1="480" x2="250" y2="480" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12" fill="#111827">
+    <text x="258" y="103">create / update</text>
+    <text x="258" y="243">create, send task</text>
+    <text x="258" y="293">stream + history</text>
+    <text x="258" y="343">message / interrupt</text>
+    <text x="258" y="393">record, delete</text>
+    <text x="258" y="473">download outputs</text>
+  </g>
+</svg>

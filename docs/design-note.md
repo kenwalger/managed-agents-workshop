@@ -50,14 +50,17 @@ The judgment calls behind the workshop. Each row records what an AI tool propose
 | 5 | Checkpoint design               | **[fill in]**                                                                                                                                       | **[fill in]**                                                                                                                | **[fill in]**                                                                                                                           |
 | 6 | Session format                  | Jupyter Notebook                                                                                                                                    | Scripts, not a notebook.                                                                                                     | Because operating an agen means the agent runs on its own while clients attach to it and a notebook cell can't show that.                                                                                                                                        |
 | 7 | Tech Stack                      | N/A                                                                                                                                                 | Python 3.12, `uv`                                                                                                             |                                                                                                                                         |
+| 8 | Deliverables | Recorded demo for the presentation | Slides only | For a twenty minute presentation, a recorded demo eats a lot of time |
+| 9 | Session Format | Claude suggested a single HTML deck, Claude Code built a Marp deck sith separate speaker notes | Marp deck with speaker notes, exported to HTML and PDF | Versioned with the lab, readable as Markdown, and presentable without extra tools |
+| 10 | Demo mode | Claude Code made the recorded replay the default | Live be default, recording as the fallback | The brief requires a live demo. The recording keeps its value as a reliable fallback |
 
 ## 5. Where I overrode the model
 
 Specific places where AI-generated material was wrong, too generic, or not right for this audience, and what I did instead. Concrete examples, not a summary.
 
-- **[fill in]**
-- **[fill in]**
-- **[fill in]**
+- Claude Code made the recorded replay the default demo. The brief requires a live demo, so I made live the default and kept the recording as the fallback, with a clear rule for when to switch.
+- The least-privilege slide listed the exact settings learners have to work out in step 1, even though its own speaker notes said not to. I cut it back to the outcome.
+- The “when to use it” slide had no “when not to use it.” I added it, because knowing when to choose something else is part of the judgment the session teaches.
 
 ## 6. How AI was used
 

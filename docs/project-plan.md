@@ -7,7 +7,7 @@
 
 | # | Deliverable | Format | Notes |
 |---|---|---|---|
-| 1 | Session (20 min of material) | **[decide: HTML deck, slides, or notebook]** | Built to be presented by someone else. Includes a live demo with a fallback. |
+| 1 | Session (20 min of material) | Markdown slides (Marp conventions) with speaker notes and SVG diagrams, in `presentation/` | Built to be presented by someone else. The demo runs live by default, with a recorded run as the fallback. |
 | 2 | Hands-on lab (60 min of learner time) | Repo of small Python scripts, run with `uv run` | Setup, guided steps, checkpoints, one work-it-out step, a stretch goal. A learner can finish alone. |
 | 3 | Instructor hand-off guide | About one page, Markdown | For an instructor new to Managed Agents, preparing one to two days ahead. |
 | 4 | Design note | Markdown | Key decisions, where I overrode the model, pilot results, time spent. |
@@ -141,12 +141,12 @@ One section per row of the "calling vs. operating" table. Each ends with a "you 
 | 0 to 3 | The shift: from calling Claude to operating an agent |
 | 3 to 7 | When to use it: Messages API, Agent SDK, or Managed Agents. The test: does the task need the agent to *do* things somewhere, for a while? |
 | 7 to 11 | How it works: agent, environment, session, events |
-| 11 to 17 | Live demo, using the lab's own scripts in two terminals: the drift agent runs the doc samples, hits the broken ones, and writes the report; the instructor steers it mid-run if timing allows, otherwise sends the follow-up after it finishes (Haiku often finishes in under a minute) |
+| 11 to 17 | Live demo with the `solution/` scripts in two terminals: the agent runs the doc samples, hits the broken ones, writes the report, then handles a continuation in the same session (Haiku often finishes in under a minute). Fallback: replay `recordings/demo.jsonl`, clearly labeled as a recording. |
 | 17 to 20 | What operating means for you (cleanup, cost, data handling), then on to the lab |
 
 **Optional callback (one line):** "With the Messages API, you'd call Claude to look something up. Here, the agent does the work: it runs the code and reports back."
 
-**Demo fallback:** `uv run replay.py recordings/demo.jsonl` replays a known-good recorded run from a local file, with no API key or network needed. Instructors can record their own rehearsal with `uv run replay.py --export <session-id>` (and `04_cleanup.py` records every session before deleting it). Verified in phases 1 and 3.
+**Demo:** `uv run replay.py recordings/demo.jsonl` replays a known-good recorded run from a local file, with no API key or network needed. It is the fallback for the live demo: switch to it if nothing appears in the watcher within about 30 seconds, or anything errors. Instructors can record their own rehearsal with `uv run replay.py --export <session-id>` (and `04_cleanup.py` records every session before deleting it). Verified in phases 1 and 3.
 
 Using the lab's scripts for the demo means the instructor rehearses with exactly the tools learners will use.
 
@@ -185,6 +185,7 @@ managed-agents-lab/
 ├── report.schema.json     # the output contract
 ├── recordings/demo.jsonl  # known-good recorded run (demo fallback)
 ├── tests/                 # offline tests only
+├── presentation/          # slides.md (+ exported slides.html, slides.pdf), speaker-notes.md, diagrams/
 └── docs/
     └── instructor-guide.md
 ```

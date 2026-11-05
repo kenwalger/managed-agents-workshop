@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <title>When a message sent to a session takes effect</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/>
+    </marker>
+  </defs>
+  <rect width="960" height="430" fill="#ffffff"/>
+
+  <!-- Lane 1: mid-run -->
+  <text x="20" y="30" font-size="15" font-weight="700" fill="#111827">1. Sent while the agent is running</text>
+  <g font-size="12" text-anchor="middle">
+    <rect x="40" y="70" width="90" height="40" fill="#dbeafe" stroke="#1d4ed8"/><text x="85" y="95" fill="#1e3a8a">model step</text>
+    <rect x="130" y="70" width="230" height="40" fill="#e5e7eb" stroke="#6b7280"/><text x="245" y="95" fill="#111827">tool calls in flight</text>
+    <rect x="360" y="70" width="110" height="40" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/><text x="415" y="95" fill="#1e3a8a">next step</text>
+    <rect x="470" y="70" width="150" height="40" fill="#e5e7eb" stroke="#6b7280"/><text x="545" y="95" fill="#111827">tool calls</text>
+    <rect x="620" y="70" width="90" height="40" fill="#dbeafe" stroke="#1d4ed8"/><text x="665" y="95" fill="#1e3a8a">model step</text>
+    <rect x="710" y="70" width="70" height="40" fill="#ecfdf5" stroke="#047857"/><text x="745" y="95" fill="#065f46">idle</text>
+  </g>
+  <line x1="190" y1="45" x2="190" y2="66" stroke="#c2410c" stroke-width="2" marker-end="url(#a)"/>
+  <text x="200" y="52" font-size="12.5" fill="#c2410c">steer.py sends a message</text>
+  <path d="M190,118 L190,128 L415,128 L415,118" fill="none" stroke="#c2410c" stroke-width="1.6" stroke-dasharray="5 3"/>
+  <text x="200" y="146" font-size="12" fill="#c2410c">queued (processed_at is null) until the in-flight tool calls finish</text>
+  <text x="200" y="163" font-size="12" fill="#c2410c">then taken into account at the next step, in the same turn (13.8 s wait in testing)</text>
+
+  <!-- Lane 2: after idle -->
+  <text x="20" y="205" font-size="15" font-weight="700" fill="#111827">2. Sent after the agent finished</text>
+  <g font-size="12" text-anchor="middle">
+    <rect x="40" y="240" width="300" height="40" fill="#e5e7eb" stroke="#6b7280"/><text x="190" y="265" fill="#111827">turn 1: the drift check</text>
+    <rect x="340" y="240" width="120" height="40" fill="#ecfdf5" stroke="#047857"/><text x="400" y="265" fill="#065f46">idle</text>
+    <rect x="460" y="240" width="320" height="40" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/><text x="620" y="265" fill="#1e3a8a">turn 2: same session, sandbox, and history</text>
+    <rect x="780" y="240" width="70" height="40" fill="#ecfdf5" stroke="#047857"/><text x="815" y="265" fill="#065f46">idle</text>
+  </g>
+  <line x1="420" y1="215" x2="420" y2="236" stroke="#c2410c" stroke-width="2" marker-end="url(#a)"/>
+  <text x="430" y="222" font-size="12.5" fill="#c2410c">steer.py sends a message: it starts a new turn</text>
+
+  <!-- Lane 3: interrupt -->
+  <text x="20" y="330" font-size="15" font-weight="700" fill="#111827">3. Interrupt (optional drill)</text>
+  <g font-size="12" text-anchor="middle">
+    <rect x="40" y="365" width="260" height="40" fill="#e5e7eb" stroke="#6b7280"/><text x="170" y="390" fill="#111827">running: a long tool call</text>
+    <rect x="300" y="365" width="120" height="40" fill="#ecfdf5" stroke="#047857"/><text x="360" y="390" fill="#065f46">idle</text>
+  </g>
+  <line x1="260" y1="340" x2="260" y2="361" stroke="#c2410c" stroke-width="2" marker-end="url(#a)"/>
+  <text x="270" y="347" font-size="12.5" fill="#c2410c">steer.py --interrupt</text>
+  <text x="440" y="383" font-size="12" fill="#374151">idle in about a second; the in-flight tool result is marked as an error;</text>
+  <text x="440" y="400" font-size="12" fill="#374151">stop reason is end_turn, and the session stays usable</text>
+</svg>
